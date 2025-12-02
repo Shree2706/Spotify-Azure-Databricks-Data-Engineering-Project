@@ -1,0 +1,9 @@
+{
+	"name": "df-shree-spotify-project",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f8966633-ef57-4712-a9d9-7204b1dcb5cb",
+		"tenantId": "eeac58cc-bfcc-49fb-b62b-3712333de1f3"
+	}
+}
