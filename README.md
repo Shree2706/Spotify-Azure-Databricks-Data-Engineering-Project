@@ -1,2 +1,3 @@
-# About
-Namaskaram! My name is Shree and i'm a Data Engineer
+# Spotify Azure Databricks Data Engineering Project
+
+In this project i'm building an end to end data pipeline using Databricks, Spark and different resources from the Azure Cloud Platform such as Azure Data Factory and Azure Synapse.
