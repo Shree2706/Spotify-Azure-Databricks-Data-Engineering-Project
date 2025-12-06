@@ -1,0 +1,12 @@
+{
+	"name": "table_1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqldb1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
