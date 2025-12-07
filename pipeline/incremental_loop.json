@@ -8,6 +8,11 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.loop_input",
+						"type": "Expression"
+					},
+					"isSequential": true,
 					"activities": [
 						{
 							"name": "AzureSQLtoLake",
@@ -162,7 +167,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "DeleteEmptyFile_copy1",
+										"name": "DeleteEmptyFile",
 										"type": "Delete",
 										"dependsOn": [],
 										"policy": {
@@ -180,10 +185,13 @@
 												"parameters": {
 													"container": "bronze",
 													"folder": {
-														"value": "@pipeline().parameters.table",
+														"value": "@item().table",
 														"type": "Expression"
 													},
-													"file": "@concat(pipeline().parameters.table,'_',variables('current'))"
+													"file": {
+														"value": "@concat(item().table,'_',variables('current'))",
+														"type": "Expression"
+													}
 												}
 											},
 											"enableLogging": false,
@@ -197,7 +205,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "max_cdc_copy1",
+										"name": "max_cdc",
 										"type": "Script",
 										"dependsOn": [],
 										"policy": {
@@ -226,11 +234,11 @@
 										}
 									},
 									{
-										"name": "update_last_cdc_copy1",
+										"name": "update_last_cdc",
 										"type": "Copy",
 										"dependsOn": [
 											{
-												"activity": "max_cdc_copy1",
+												"activity": "max_cdc",
 												"dependencyConditions": [
 													"Succeeded"
 												]
@@ -310,17 +318,40 @@
 			}
 		],
 		"parameters": {
-			"schema": {
-				"type": "string"
-			},
-			"table": {
-				"type": "string"
-			},
-			"cdc_col": {
-				"type": "string"
-			},
-			"from_date": {
-				"type": "string"
+			"loop_input": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"schema": "dbo",
+						"table": "DimUser",
+						"cdc_col": "updated_at",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "DimTrack",
+						"cdc_col": "updated_at",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "DimDate",
+						"cdc_col": "date",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "DimArtist",
+						"cdc_col": "updated_at",
+						"from_date": ""
+					},
+					{
+						"schema": "dbo",
+						"table": "FactStream",
+						"cdc_col": "stream_timestamp",
+						"from_date": ""
+					}
+				]
 			}
 		},
 		"variables": {
